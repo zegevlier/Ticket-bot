@@ -1,6 +1,7 @@
 import { Ticket } from "@prisma/client";
 import { Client, Message } from "discord.js";
 import db from "../../utils/db.js";
+import { onTicketClose } from "../../utils/onTicketClose.js";
 
 export async function closeCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
 
@@ -77,4 +78,6 @@ export async function closeCommand(command: string, args: string[], message: Mes
         console.log("Error sending message to user when trying to close ticket.", error);
     });
     await message.channel.delete();
+    if (message.guild === null) { return };
+    await onTicketClose(ticket, message.author, userMessage, message.guild, false);
 }
