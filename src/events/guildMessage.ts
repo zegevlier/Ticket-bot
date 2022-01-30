@@ -98,4 +98,13 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
             }
         }
     });
+
+    await db.logs.create({
+        data: {
+            type: "MESSAGE",
+            ticketId: ticket.ticketId,
+            userId: message.author.id,
+            message: message.content,
+        }
+    });
 }

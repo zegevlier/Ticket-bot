@@ -16,6 +16,7 @@ enum PingType {
 }
 
 enum LogType {
+  CREATETICKET
   MESSAGE
   CLOSE
   COMMENT

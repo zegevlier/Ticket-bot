@@ -100,6 +100,15 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 }
             }
         });
+
+        await db.logs.create({
+            data: {
+                type: "MESSAGE",
+                ticketId: activeTicket.ticketId,
+                userId: message.author.id,
+                message: message.content,
+            }
+        });
     } else {
         let catagoryOptions: MessageSelectOptionData[] = [];
         let catagories = await db.catagories.findMany(

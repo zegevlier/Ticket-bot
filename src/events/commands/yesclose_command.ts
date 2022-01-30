@@ -29,4 +29,11 @@ export async function yescloseCommand(command: string, args: string[], message: 
             ]
         }
     );
+    await db.logs.create({
+        data: {
+            ticketId: ticket.ticketId,
+            userId: message.author.id,
+            type: "YESCLOSE"
+        }
+    });
 }

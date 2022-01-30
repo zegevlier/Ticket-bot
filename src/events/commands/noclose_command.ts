@@ -30,4 +30,13 @@ export async function nocloseCommand(command: string, args: string[], message: M
             ]
         }
     );
+
+    await db.logs.create({
+        data: {
+            ticketId: ticket.ticketId,
+            userId: message.author.id,
+            message: closeReason,
+            type: "NOCLOSE"
+        }
+    });
 }

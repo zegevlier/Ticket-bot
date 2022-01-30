@@ -104,6 +104,14 @@ export abstract class AppDiscord {
             },
         });
 
+        await db.logs.create({
+            data: {
+                type: "CREATETICKET",
+                ticketId: ticket.ticketId,
+                userId: interaction.user.id,
+            }
+        });
+
         await interaction.followUp({
             embeds: [
                 {
