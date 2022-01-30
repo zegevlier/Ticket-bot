@@ -1,7 +1,7 @@
 import { Client } from "discord.js";
 import { ArgsOf } from "discordx";
-import db from "../utils/db";
-import { handleTicketCommand } from "./ticket_commands";
+import db from "../utils/db.js";
+import { handleTicketCommand } from "./ticket_commands.js";
 
 export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Client) {
     console.log("Message Created", client.user?.username, message.content);

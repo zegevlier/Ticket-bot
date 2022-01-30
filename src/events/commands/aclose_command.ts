@@ -2,7 +2,7 @@ import { Ticket } from "@prisma/client";
 import { Client, Message } from "discord.js";
 import db from "../../utils/db.js";
 
-export async function closeCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
+export async function acloseCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
     await message.channel.send("Ticket closed!");
     await db.ticket.update({
         where: {
@@ -27,7 +27,7 @@ export async function closeCommand(command: string, args: string[], message: Mes
             userId: message.author.id,
             message: userMessage,
             type: "CLOSE",
-            anonymous: false,
+            anonymous: true,
         }
     });
 
@@ -38,8 +38,8 @@ export async function closeCommand(command: string, args: string[], message: Mes
                 description: userMessage,
                 color: 16719616,
                 author: {
-                    name: message.author.tag,
-                    icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,
+                    name: process.env.ANON_NAME,
+                    icon_url: process.env.ANON_ICON_URL,
                 },
                 timestamp: new Date(),
             }

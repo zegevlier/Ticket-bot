@@ -56,14 +56,13 @@ model Ping {
 }
 
 model Logs {
-  logId          String   @id @default(cuid())
-  ticketId       String
-  userId         String
-  type           LogType
-  message        String?
-  extra          String?
-  anonymous      Boolean  @default(false)
-  createdAt      DateTime
-  Ticket         Ticket?  @relation(fields: [ticketTicketId], references: [ticketId])
-  ticketTicketId String?
+  logId     String   @id @default(cuid())
+  userId    String
+  type      LogType
+  message   String?
+  extra     String?
+  anonymous Boolean  @default(false)
+  createdAt DateTime @default(now())
+  Ticket    Ticket?  @relation(fields: [ticketId], references: [ticketId])
+  ticketId  String?
 }

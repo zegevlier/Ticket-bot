@@ -1,6 +1,6 @@
 import { Client, MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 import { ArgsOf } from "discordx";
-import db from "../utils/db";
+import db from "../utils/db.js";
 
 export async function handleDm([message]: ArgsOf<"messageCreate">, client: Client) {
     console.log("DM Created", client.user?.username, message.content);
@@ -74,14 +74,18 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
             }
         );
 
+        let pingMessage = "";
+
         for (let ping of activeTicket.activePings) {
-            let message;
             if (ping.type === "ROLE") {
-                message = await channel.send(`<@&${ping.id}>`);
-            } else {
-                message = await channel.send(`<@${ping.id}>`);
+                pingMessage += `<@&${ping.id}> `;
+            } else if (ping.type === "USER") {
+                pingMessage += `<@${ping.id}> `;
             }
-            message.delete();
+        }
+
+        if (pingMessage !== "") {
+            await (await channel.send(pingMessage)).delete();
         }
 
         await db.ticket.update({
