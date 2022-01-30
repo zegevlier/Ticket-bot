@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  ticketId       String    @id @default(cuid())
+  channelId      String
+  userId         String
+  catagoryId     String
+  closed         Boolean   @default(false)
+  closedId       String // ID of who closed the channel.
+  closable       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  activePings    Ping[]
+  messages       Message[]
+  Rating         Rating    @relation(fields: [ratingRatingId], references: [ratingId])
+  ratingRatingId String
+}
+
+model Catagories {
+  catagoryId    String   @id @default(cuid())
+  name          String
+  pingingRoles  String[]
+  disCatagoryId String
+  openMessage   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Ping {
+  pingId         String   @id @default(cuid())
+  ticketId       String
+  userId         String
+  createdAt      DateTime
+  Ticket         Ticket?  @relation(fields: [ticketTicketId], references: [ticketId])
+  ticketTicketId String?
+}
+
+model Message {
+  messageId      String   @id @default(cuid())
+  ticketId       String
+  userId         String
+  message        String
+  extra          String
+  anonymous      Boolean  @default(false)
+  createdAt      DateTime
+  Ticket         Ticket?  @relation(fields: [ticketTicketId], references: [ticketId])
+  ticketTicketId String?
+}
+
+model Rating {
+  ratingId  String   @id @default(cuid())
+  ticketId  String
+  userId    String
+  rating    Int
+  createdAt DateTime
+  Ticket    Ticket[]
+}
