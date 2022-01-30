@@ -10,20 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PingType {
+  ROLE
+  USER
+}
+
+enum LogType {
+  MESSAGE
+  CLOSE
+  COMMENT
+}
+
 model Ticket {
-  ticketId       String    @id @default(cuid())
-  channelId      String
-  userId         String
-  catagoryId     String
-  closed         Boolean   @default(false)
-  closedId       String // ID of who closed the channel.
-  closable       Boolean   @default(true)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  activePings    Ping[]
-  messages       Message[]
-  Rating         Rating    @relation(fields: [ratingRatingId], references: [ratingId])
-  ratingRatingId String
+  ticketId     String   @id @default(cuid())
+  channelId    String
+  userId       String
+  catagoryId   String
+  closed       Boolean  @default(false)
+  closedId     String? // ID of who closed the channel.
+  closedReason String? // Reason for closing the channel.
+  closable     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  activePings  Ping[]
+  messages     Logs[]
 }
 
 model Catagories {
@@ -37,31 +47,23 @@ model Catagories {
 }
 
 model Ping {
-  pingId         String   @id @default(cuid())
-  ticketId       String
-  userId         String
-  createdAt      DateTime
-  Ticket         Ticket?  @relation(fields: [ticketTicketId], references: [ticketId])
-  ticketTicketId String?
+  pingId    String   @id @default(cuid())
+  id        String
+  type      PingType
+  createdAt DateTime @default(now())
+  Ticket    Ticket?  @relation(fields: [ticketId], references: [ticketId])
+  ticketId  String?
 }
 
-model Message {
-  messageId      String   @id @default(cuid())
+model Logs {
+  logId          String   @id @default(cuid())
   ticketId       String
   userId         String
-  message        String
-  extra          String
+  type           LogType
+  message        String?
+  extra          String?
   anonymous      Boolean  @default(false)
   createdAt      DateTime
   Ticket         Ticket?  @relation(fields: [ticketTicketId], references: [ticketId])
   ticketTicketId String?
-}
-
-model Rating {
-  ratingId  String   @id @default(cuid())
-  ticketId  String
-  userId    String
-  rating    Int
-  createdAt DateTime
-  Ticket    Ticket[]
 }
