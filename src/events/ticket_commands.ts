@@ -3,8 +3,10 @@ import { Client, Message } from "discord.js";
 import { acloseCommand } from "./commands/aclose_command.js";
 
 import { closeCommand } from "./commands/close_command.js";
+import { nocloseCommand } from "./commands/noclose_command.js";
 import { nopingCommand } from "./commands/noping_command.js";
 import { pingCommand } from "./commands/ping_command.js";
+import { yescloseCommand } from "./commands/yesclose_command.js";
 
 export async function handleTicketCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
     switch (command) {
@@ -19,6 +21,12 @@ export async function handleTicketCommand(command: string, args: string[], messa
             break;
         case "noping":
             await nopingCommand(command, args, message, ticket, client);
+            break;
+        case "yesclose":
+            await yescloseCommand(command, args, message, ticket, client);
+            break;
+        case "noclose":
+            await nocloseCommand(command, args, message, ticket, client);
             break;
         default:
             break;

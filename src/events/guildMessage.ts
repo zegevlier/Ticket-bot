@@ -77,6 +77,20 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         },
         data: {
             activePings: {
+                deleteMany: {
+                    id: message.author.id,
+                    type: "USER",
+                }
+            }
+        }
+    });
+
+    await db.ticket.update({
+        where: {
+            ticketId: ticket.ticketId,
+        },
+        data: {
+            activePings: {
                 create: {
                     type: "USER",
                     id: message.author.id,

@@ -3,7 +3,37 @@ import { Client, Message } from "discord.js";
 import db from "../../utils/db.js";
 
 export async function acloseCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
-    await message.channel.send("Ticket closed!");
+
+    if (!ticket.closable) {
+        await message.channel.send(
+            {
+                embeds: [
+                    {
+                        title: "This ticket is not closable.",
+                        description: `This ticket was marked as unclosable for the following reason: \`\`\`${ticket.closableReason}\`\`\``,
+                        color: 16711680,
+                        footer: {
+                            text: "This message will be deleted in 10 seconds.",
+                        },
+                        author: {
+                            name: message.author.tag,
+                            icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,
+                        }
+                    },
+                ]
+            }
+        );
+
+        await message.delete();
+
+        setTimeout(async () => {
+            await message.delete().catch(() => { });
+        }, 10000);
+
+        return;
+    }
+
+
     await db.ticket.update({
         where: {
             ticketId: ticket.ticketId,
@@ -14,6 +44,9 @@ export async function acloseCommand(command: string, args: string[], message: Me
             closedReason: args.join(" "),
         }
     });
+
+    await message.channel.send("Ticket closed!");
+
     let userMessage;
     if (args.length > 0) {
         userMessage = `Reason: ${args.join(" ")}`;

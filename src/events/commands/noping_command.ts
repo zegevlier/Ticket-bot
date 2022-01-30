@@ -39,6 +39,6 @@ export async function nopingCommand(command: string, args: string[], message: Me
     );
 
     setTimeout(async () => {
-        await doneMessage.delete();
+        await doneMessage.delete().catch(() => { });
     }, 10000);
 }

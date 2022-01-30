@@ -19,21 +19,24 @@ enum LogType {
   MESSAGE
   CLOSE
   COMMENT
+  NOCLOSE
+  YESCLOSE
 }
 
 model Ticket {
-  ticketId     String   @id @default(cuid())
-  channelId    String
-  userId       String
-  catagoryId   String
-  closed       Boolean  @default(false)
-  closedId     String? // ID of who closed the channel.
-  closedReason String? // Reason for closing the channel.
-  closable     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  activePings  Ping[]
-  messages     Logs[]
+  ticketId       String   @id @default(cuid())
+  channelId      String
+  userId         String
+  catagoryId     String
+  closed         Boolean  @default(false)
+  closedId       String? // ID of who closed the channel.
+  closedReason   String? // Reason for closing the channel.
+  closable       Boolean  @default(true)
+  closableReason String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  activePings    Ping[]
+  messages       Logs[]
 }
 
 model Catagories {

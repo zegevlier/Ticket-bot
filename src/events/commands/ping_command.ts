@@ -9,6 +9,20 @@ export async function pingCommand(command: string, args: string[], message: Mess
         },
         data: {
             activePings: {
+                deleteMany: {
+                    id: message.author.id,
+                    type: "USER",
+                }
+            }
+        }
+    });
+
+    await db.ticket.update({
+        where: {
+            ticketId: ticket.ticketId,
+        },
+        data: {
+            activePings: {
                 create: {
                     type: "USER",
                     id: message.author.id,
