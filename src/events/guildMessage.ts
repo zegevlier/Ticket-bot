@@ -27,14 +27,21 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         return;
     }
 
+    let anon = false;
+    let messageContent = message.content;
+    if (message.content.startsWith(process.env.ANON_PREFIX || "!")) {
+        anon = true;
+        messageContent = message.content.substring(process.env.ANON_PREFIX?.length || 1);
+    }
+
     await client.users.send(ticket.userId, {
         embeds: [
             {
-                description: `${message.content}`,
+                description: messageContent,
                 color: 8781568,
                 author: {
-                    name: `${message.author.tag}`,
-                    icon_url: `${message.author.avatarURL()}`,
+                    name: anon ? process.env.ANON_NAME || "Anonymous" : message.author.tag,
+                    icon_url: anon ? process.env.ANON_ICON_URL : message.author.avatarURL() ?? message.author.defaultAvatarURL,
                 },
                 timestamp: new Date(),
             }
@@ -56,10 +63,10 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
     await message.channel.send({
         embeds: [
             {
-                description: `${message.content}`,
+                description: messageContent,
                 color: 8781568,
                 author: {
-                    name: `${message.author.tag}`,
+                    name: anon ? `${message.author.tag} | Anonymous` : `${message.author.tag}`,
                     icon_url: `${message.author.avatarURL()}`,
                 },
                 footer: {
@@ -104,7 +111,8 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
             type: "MESSAGE",
             ticketId: ticket.ticketId,
             userId: message.author.id,
-            message: message.content,
+            message: messageContent,
+            anonymous: anon,
         }
     });
 }

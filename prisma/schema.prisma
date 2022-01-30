@@ -43,6 +43,7 @@ model Ticket {
 model Catagories {
   catagoryId    String   @id @default(cuid())
   name          String
+  description   String
   pingingRoles  String[]
   disCatagoryId String
   openMessage   String

@@ -116,6 +116,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 select: {
                     name: true,
                     catagoryId: true,
+                    description: true,
                 }
             }
         );
@@ -124,6 +125,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 {
                     label: catagory.name,
                     value: catagory.catagoryId,
+                    description: catagory.description
                 }
             )
         });
@@ -133,7 +135,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
 
         const buttonRow = new MessageActionRow().addComponents(menu);
 
-        message.reply({
+        message.channel.send({
             content: "Please select a catagory",
             components: [buttonRow],
         });
