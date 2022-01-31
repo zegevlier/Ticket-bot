@@ -38,7 +38,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         embeds: [
             {
                 description: messageContent,
-                color: 8781568,
+                color: "GREEN",
                 author: {
                     name: anon ? process.env.ANON_NAME || "Anonymous" : message.author.tag,
                     icon_url: anon ? process.env.ANON_ICON_URL : message.author.avatarURL() ?? message.author.defaultAvatarURL,
@@ -64,7 +64,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         embeds: [
             {
                 description: messageContent,
-                color: 8781568,
+                color: "GREEN",
                 author: {
                     name: anon ? `${message.author.tag} | Anonymous` : `${message.author.tag}`,
                     icon_url: `${message.author.avatarURL()}`,

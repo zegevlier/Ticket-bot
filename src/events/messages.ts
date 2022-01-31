@@ -63,8 +63,8 @@ export abstract class AppDiscord {
                 embeds: [
                     {
                         title: "New ticket",
-                        description: `Type a message here to send it to the user, messages starting with \`${process.env.PREFIX}\` will not be sent to the user.`,
-                        color: 5814783,
+                        description: `Type a message here to send it to the user, messages starting with \`${process.env.PREFIX}\` will not be sent to the user and messages starting with \`${process.env.ANON_PREFIX}\` will be sent anonymously.`,
+                        color: "DARK_AQUA",
                         fields: [
                             {
                                 name: "User",
@@ -117,7 +117,7 @@ export abstract class AppDiscord {
                 {
                     title: "Ticket created!",
                     description: catagory.openMessage,
-                    color: 5814783,
+                    color: "DARK_AQUA",
                     fields: [
                         {
                             name: "NOTE:",

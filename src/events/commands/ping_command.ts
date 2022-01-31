@@ -39,7 +39,7 @@ export async function pingCommand(command: string, args: string[], message: Mess
                 {
                     title: "You will be notified when the user responds.",
                     description: "If you no longer wish to be notified, use `noping`",
-                    color: 16583,
+                    color: "AQUA",
                     author: {
                         name: message.author.tag,
                         icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,

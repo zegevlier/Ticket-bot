@@ -12,7 +12,7 @@ export async function closeCommand(command: string, args: string[], message: Mes
                     {
                         title: "This ticket is not closable.",
                         description: `This ticket was marked as unclosable for the following reason: \`\`\`${ticket.closableReason}\`\`\``,
-                        color: 16711680,
+                        color: "RED",
                         footer: {
                             text: "This message will be deleted in 10 seconds.",
                         },
@@ -66,7 +66,7 @@ export async function closeCommand(command: string, args: string[], message: Mes
             {
                 title: "Ticket closed",
                 description: userMessage,
-                color: 16719616,
+                color: "ORANGE",
                 author: {
                     name: message.author.tag,
                     icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,

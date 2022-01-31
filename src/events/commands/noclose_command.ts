@@ -21,7 +21,7 @@ export async function nocloseCommand(command: string, args: string[], message: M
                 {
                     title: "This ticket is now marked as unclosable.",
                     description: `This ticket can no longer be closed, until the \`yesclose\` command is used. Reason: \`\`\`${closeReason}\`\`\``,
-                    color: 16583,
+                    color: "AQUA",
                     author: {
                         name: message.author.tag,
                         icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,

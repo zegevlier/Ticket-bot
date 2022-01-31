@@ -25,7 +25,7 @@ export async function nopingCommand(command: string, args: string[], message: Me
                 {
                     title: "You will be NOT notified when the user responds.",
                     description: "If you do wish to be notified, use `ping`",
-                    color: 16583,
+                    color: "AQUA",
                     author: {
                         name: message.author.tag,
                         icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,

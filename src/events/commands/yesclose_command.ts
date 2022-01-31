@@ -20,7 +20,7 @@ export async function yescloseCommand(command: string, args: string[], message: 
                 {
                     title: "This ticket is now marked as closable.",
                     description: "This ticket can now be closed.",
-                    color: 16583,
+                    color: "AQUA",
                     author: {
                         name: message.author.tag,
                         icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,

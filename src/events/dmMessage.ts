@@ -43,7 +43,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 embeds: [
                     {
                         description: `${message.content}`,
-                        color: 65453,
+                        color: "GOLD",
                         author: {
                             name: `${message.author.tag}`,
                             icon_url: `${message.author.avatarURL()}`,
@@ -59,7 +59,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 embeds: [
                     {
                         description: `${message.content}`,
-                        color: 65453,
+                        color: "GOLD",
                         author: {
                             name: `${message.author.tag}`,
                             icon_url: `${message.author.avatarURL()}`,
