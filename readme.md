@@ -2,8 +2,9 @@
 
 ## Todo
 
-    * Fix colours
+    * ~~Fix colours~~
     * Make log on ticket open
+    * Fix attatchments
     * Upload logs somewhere instead of dumping them in the chat.
     * Add fix command, so if the database gets desynced it doesn't stay broken
     * Blacklist system
