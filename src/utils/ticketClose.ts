@@ -1,6 +1,11 @@
 import { Ticket } from "@prisma/client";
-import { Client, Guild, Message, User } from "discord.js";
+import { Client, Guild, Message, MessageAttachment, TextChannel, User } from "discord.js";
+
+import { BlobServiceClient } from "@azure/storage-blob";
+
 import db from "./db.js";
+
+import discordTranscripts from 'discord-html-transcripts';
 
 export async function onTicketClose(ticket: Ticket, message: Message<boolean>, reason: string, client: Client, anon: boolean): Promise<void> {
 
@@ -73,6 +78,13 @@ export async function onTicketClose(ticket: Ticket, message: Message<boolean>, r
     }).catch((error) => {
         console.log("Error sending message to user when trying to close ticket.", error);
     });
+
+    if (!message.channel.isText()) {
+        return;
+    };
+
+    let logsTranscript = await discordTranscripts.createTranscript(message.channel as TextChannel);
+
     await message.channel.delete();
 
     let logsChannel = message.guild.channels.cache.find(channel => channel.id === process.env.LOG_CHANNEL_ID);
@@ -95,12 +107,35 @@ export async function onTicketClose(ticket: Ticket, message: Message<boolean>, r
         return;
     }
 
+    const STORAGE_CONNECTION_STRING = process.env.STORAGE_CONNECTION_STRING || "";
+    if (STORAGE_CONNECTION_STRING === "") {
+        console.log("Could not upload logs to Azure Blob Storage. No connection string found.");
+    } else {
+        const blobServiceClient = BlobServiceClient.fromConnectionString(STORAGE_CONNECTION_STRING);
+        const containerName = "$web";
+        const containerClient = blobServiceClient.getContainerClient(containerName);
+        const textBlobClient = containerClient.getBlockBlobClient(`${ticket.ticketId}.txt`);
+        const textBuffer = Buffer.from(`${logMessage}`);
+        await textBlobClient.uploadData(textBuffer as Buffer, {
+            blobHTTPHeaders: {
+                blobContentType: "text/plain; charset=utf-8"
+            }
+        });
+
+        const htmlBlobClient = containerClient.getBlockBlobClient(`${ticket.ticketId}.html`);
+        await htmlBlobClient.uploadData(logsTranscript.attachment as Buffer, {
+            blobHTTPHeaders: {
+                blobContentType: "text/html; charset=utf-8"
+            }
+        });
+    }
+
     logsChannel.send(
         {
             embeds: [
                 {
                     title: "Ticket closed",
-                    description: `\`\`\`${logMessage}\`\`\``,
+                    description: `There were ${logs.length} logs for this ticket.`,
                     author: {
                         name: anon ? `${message.author.tag} | Anonymous` : `${message.author.tag}`,
                         icon_url: `${message.author.avatarURL()}`,
@@ -110,9 +145,26 @@ export async function onTicketClose(ticket: Ticket, message: Message<boolean>, r
                         iconURL: ticketOwner.user.avatarURL() ?? undefined,
                     },
                     timestamp: new Date(),
-                    color: "AQUA"
+                    color: "RED",
+                    fields: [
+                        {
+                            name: "Pretty logs",
+                            value: `[Click here](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.html)`,
+                            inline: true,
+                        },
+                        {
+                            name: "Full logs",
+                            value: `[Click here](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.txt)`,
+                            inline: true,
+                        },
+                        {
+                            name: "Ticket ID",
+                            value: `${ticket.ticketId}`,
+                            inline: true,
+                        }
+                    ]
                 }
-            ]
+            ],
         }
     );
 }

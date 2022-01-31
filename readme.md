@@ -5,7 +5,7 @@
 - [x] Fix colours
 - [x] Make log on ticket open
 - [ ] Fix attatchments
-- [ ] Upload logs somewhere instead of dumping them in the chat.
+- [x] Upload logs somewhere instead of dumping them in the chat.
 - [ ] Add fix command, so if the database gets desynced it doesn't stay broken
 - [ ] Blacklist system
 - [ ] Allow staff to set preferences for ping/noping
