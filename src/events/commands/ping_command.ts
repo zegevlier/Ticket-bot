@@ -1,35 +1,9 @@
 import { Ticket } from "@prisma/client";
 import { Client, Message } from "discord.js";
-import db from "../../utils/db.js";
+import { addPing } from "../../utils/addPing.js";
 
-export async function pingCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
-    await db.ticket.update({
-        where: {
-            ticketId: ticket.ticketId,
-        },
-        data: {
-            activePings: {
-                deleteMany: {
-                    id: message.author.id,
-                    type: "USER",
-                }
-            }
-        }
-    });
-
-    await db.ticket.update({
-        where: {
-            ticketId: ticket.ticketId,
-        },
-        data: {
-            activePings: {
-                create: {
-                    type: "USER",
-                    id: message.author.id,
-                }
-            }
-        }
-    });
+export async function pingCommand(args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
+    addPing("USER", message.author.id, ticket.ticketId);
 
     await message.delete();
 

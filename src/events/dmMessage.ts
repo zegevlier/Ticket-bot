@@ -26,12 +26,12 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
     });
 
     if (activeTicket) {
-        let guild = client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
+        const guild = client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
         if (!guild) {
             console.log("Could not find guild", process.env.GUILD_ID);
             return;
         }
-        let channel = guild.channels.cache.find((channel) => channel.id === activeTicket.channelId);
+        const channel = guild.channels.cache.find((channel) => channel.id === activeTicket.channelId);
         if (!channel || !channel.isText()) {
             console.log("Invalid channel ID in database!", activeTicket.channelId);
             message.reply("An unknown error occurred! Please contact a staff member.");
@@ -74,15 +74,15 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
             }
         );
 
-        let pingMessage = "";
-
-        for (let ping of activeTicket.activePings) {
+        const pingMessage = activeTicket.activePings.reduce((acc, ping) => {
             if (ping.type === "ROLE") {
-                pingMessage += `<@&${ping.id}> `;
+                return acc + `<@&${ping.id}> `;
             } else if (ping.type === "USER") {
-                pingMessage += `<@${ping.id}> `;
+                return acc + `<@${ping.id}> `;
+            } else {
+                return acc;
             }
-        }
+        }, "");
 
         if (pingMessage !== "") {
             await (await channel.send(pingMessage)).delete();
@@ -110,8 +110,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
             }
         });
     } else {
-        let catagoryOptions: MessageSelectOptionData[] = [];
-        let catagories = await db.catagory.findMany(
+        const catagories = await db.catagory.findMany(
             {
                 select: {
                     name: true,
@@ -120,24 +119,21 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 }
             }
         );
-        catagories.forEach((catagory) => {
-            catagoryOptions.push(
-                {
-                    label: catagory.name,
-                    value: catagory.catagoryId,
-                    description: catagory.description
-                }
-            )
+        const catagoryOptions: MessageSelectOptionData[] = catagories.map((catagory) => {
+            return {
+                label: catagory.name,
+                value: catagory.catagoryId,
+                description: catagory.description
+            };
         });
         const menu = new MessageSelectMenu()
             .addOptions(catagoryOptions)
             .setCustomId("catagory-menu");
 
-        const buttonRow = new MessageActionRow().addComponents(menu);
 
         message.channel.send({
             content: "Please select a catagory",
-            components: [buttonRow],
+            components: [new MessageActionRow().addComponents(menu)],
         });
     }
 }

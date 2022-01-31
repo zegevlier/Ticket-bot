@@ -2,7 +2,7 @@ import { Ticket } from "@prisma/client";
 import { Client, Message } from "discord.js";
 import db from "../../utils/db.js";
 
-export async function nopingCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
+export async function nopingCommand(args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
     await db.ticket.update({
         where: {
             ticketId: ticket.ticketId,
@@ -18,7 +18,6 @@ export async function nopingCommand(command: string, args: string[], message: Me
     });
 
     await message.delete();
-
     const doneMessage = await message.channel.send(
         {
             embeds: [

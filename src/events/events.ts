@@ -14,16 +14,16 @@ export abstract class AppDiscord {
     async onMessage([message]: ArgsOf<"messageCreate">, client: Client) {
         if (message.author.id !== client.user?.id) {
             if (message.inGuild()) {
-                handleGuild([message], client);
+                await handleGuild([message], client);
             } else {
-                handleDm([message], client);
+                await handleDm([message], client);
             }
         }
     }
 
     @SelectMenuComponent("catagory-menu")
     async catagoryMenu(interaction: SelectMenuInteraction) {
-        let catagory = await db.catagory.findUnique({
+        const catagory = await db.catagory.findUnique({
             where: {
                 catagoryId: interaction.values?.[0],
             }
@@ -39,14 +39,14 @@ export abstract class AppDiscord {
             components: [],
         });
 
-        let guild = interaction.client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
+        const guild = interaction.client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
 
         if (!guild) {
             console.log("Could not find guild", process.env.GUILD_ID);
             return;
         }
 
-        let ticket: Ticket = await openTicket(guild, interaction.user, catagory);
+        const ticket: Ticket = await openTicket(guild, interaction.user, catagory);
 
         await interaction.followUp({
             embeds: [
@@ -55,10 +55,12 @@ export abstract class AppDiscord {
                     description: catagory.openMessage,
                     color: "DARK_AQUA",
                     fields: [
-                        {
-                            name: "NOTE:",
-                            value: "**YOUR FIRST MESSAGE WAS NOT SENT, YOU NEED TO SEND IT AGAIN FOR STAFF TO RECEIVE IT!**"
-                        }
+                        // Only add note if `process.env.NOTE` is set
+                        ...(process.env.NOTE ?
+                            [{
+                                name: "NOTE:",
+                                value: process.env.NOTE,
+                            }] : []),
                     ],
                     footer: {
                         text: `Ticket ID: ${ticket.ticketId}`,
@@ -66,8 +68,6 @@ export abstract class AppDiscord {
                 }
             ]
         });
-
-
     }
 
 }

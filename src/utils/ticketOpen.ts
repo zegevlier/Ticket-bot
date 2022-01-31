@@ -3,7 +3,7 @@ import { Guild, User } from "discord.js";
 import db from "./db.js";
 
 export async function openTicket(guild: Guild, user: User, catagory: Catagory): Promise<Ticket> {
-    let channel = await guild.channels.create(
+    const channel = await guild.channels.create(
         `${user.username.replace(/[^a-zA-Z0-9]/g, "") ?? user.id}-${user.discriminator}`,
         {
             type: "GUILD_TEXT",
@@ -44,12 +44,13 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
         }
     );
 
+    // TODO: Should be switched to single-message
     for (let role of catagory.pingingRoles) {
-        let message = await channel.send(`<@&${role}>`);
+        const message = await channel.send(`<@&${role}>`);
         await message.delete();
     }
 
-    let ticket = await db.ticket.create({
+    const ticket = await db.ticket.create({
         data: {
             channelId: channel.id,
             userId: user.id,
@@ -65,7 +66,7 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
         }
     });
 
-    let logsChannel = guild.channels.cache.find(channel => channel.id === process.env.LOG_CHANNEL_ID);
+    const logsChannel = guild.channels.cache.find(channel => channel.id === process.env.LOG_CHANNEL_ID);
     if (logsChannel === undefined || logsChannel.type !== "GUILD_TEXT") {
         console.log("Could not log ticket! Log channel not found");
         return ticket;

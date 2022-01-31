@@ -2,7 +2,7 @@ import { Ticket } from "@prisma/client";
 import { Client, Message } from "discord.js";
 import db from "../../utils/db.js";
 
-export async function yescloseCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
+export async function yescloseCommand(args: string[], message: Message<boolean>, ticket: Ticket, client: Client): Promise<void> {
     await db.ticket.update({
         where: {
             ticketId: ticket.ticketId,

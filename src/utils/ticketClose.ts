@@ -135,7 +135,7 @@ export async function onTicketClose(ticket: Ticket, message: Message<boolean>, r
             embeds: [
                 {
                     title: "Ticket closed",
-                    description: `There were ${logs.length} logs for this ticket.`,
+                    description: reason,
                     author: {
                         name: anon ? `${message.author.tag} | Anonymous` : `${message.author.tag}`,
                         icon_url: `${message.author.avatarURL()}`,
@@ -160,7 +160,7 @@ export async function onTicketClose(ticket: Ticket, message: Message<boolean>, r
                         {
                             name: "Ticket ID",
                             value: `${ticket.ticketId}`,
-                            inline: true,
+                            inline: false,
                         }
                     ]
                 }

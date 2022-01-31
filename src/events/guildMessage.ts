@@ -1,11 +1,12 @@
 import { Client } from "discord.js";
 import { ArgsOf } from "discordx";
+import { addPing } from "../utils/addPing.js";
 import db from "../utils/db.js";
 import { handleTicketCommand } from "./ticket_commands.js";
 
 export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Client) {
     console.log("Message Created", client.user?.username, message.content);
-    let ticket = await db.ticket.findFirst({
+    const ticket = await db.ticket.findFirst({
         where: {
             channelId: message.channel.id,
             closed: false,
@@ -16,10 +17,10 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
     }
 
     if (message.content.startsWith(process.env.PREFIX || "=")) {
-        let command = message.content.substring(process.env.PREFIX?.length || 1);
-        let args = command.split(" ");
-        let commandName = args.shift();
-        let commandArgs = args;
+        const command = message.content.substring(process.env.PREFIX?.length || 1);
+        const args = command.split(" ");
+        const commandName = args.shift();
+        const commandArgs = args;
         if (commandName === undefined) {
             return;
         }
@@ -52,6 +53,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         } else {
             console.log("Error sending message to user.", error);
         }
+        return;
     });
 
     await message.delete();
@@ -78,33 +80,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         ]
     });
 
-    await db.ticket.update({
-        where: {
-            ticketId: ticket.ticketId,
-        },
-        data: {
-            activePings: {
-                deleteMany: {
-                    id: message.author.id,
-                    type: "USER",
-                }
-            }
-        }
-    });
-
-    await db.ticket.update({
-        where: {
-            ticketId: ticket.ticketId,
-        },
-        data: {
-            activePings: {
-                create: {
-                    type: "USER",
-                    id: message.author.id,
-                }
-            }
-        }
-    });
+    addPing("USER", message.author.id, ticket.ticketId);
 
     await db.logs.create({
         data: {
