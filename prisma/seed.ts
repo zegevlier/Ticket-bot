@@ -12,14 +12,14 @@ async function seed() {
                 disCatagoryId: "937132793148895302",
                 name: "General",
                 openMessage: "Please specify you issue",
-                pingingRoles: ["931625711297511476"],
+                pingingRoles: ["937743783934718032", "937743783934718032"],
                 description: "General issues",
             },
             {
                 disCatagoryId: "937446809838694470",
                 name: "Account",
                 openMessage: "You have an account issue!",
-                pingingRoles: ["931625711297511476"],
+                pingingRoles: ["937743783934718032", "937743783934718032"],
                 description: "Account related issues",
             }
         ],
