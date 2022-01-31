@@ -5,6 +5,8 @@ import type { ArgsOf } from "discordx";
 import db from "../utils/db.js";
 import { handleDm } from "./dmMessage.js";
 import { handleGuild } from "./guildMessage.js";
+import { openTicket } from "../utils/ticketOpen.js";
+import { Ticket } from "@prisma/client";
 
 @Discord()
 export abstract class AppDiscord {
@@ -21,22 +23,9 @@ export abstract class AppDiscord {
 
     @SelectMenuComponent("catagory-menu")
     async catagoryMenu(interaction: SelectMenuInteraction) {
-        let guild = interaction.client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
-
-        if (!guild) {
-            console.log("Could not find guild", process.env.GUILD_ID);
-            return;
-        }
-
-        let catagory = await db.catagories.findUnique({
+        let catagory = await db.catagory.findUnique({
             where: {
                 catagoryId: interaction.values?.[0],
-            },
-            select: {
-                disCatagoryId: true,
-                name: true,
-                openMessage: true,
-                pingingRoles: true,
             }
         });
 
@@ -50,67 +39,14 @@ export abstract class AppDiscord {
             components: [],
         });
 
-        let channel = await guild.channels.create(
-            `${interaction.user.username.replace(/[^a-zA-Z0-9]/g, "") ?? interaction.user.id}-${interaction.user.discriminator}`,
-            {
-                type: "GUILD_TEXT",
-                parent: catagory.disCatagoryId,
-            }
-        );
+        let guild = interaction.client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
 
-        channel.send(
-            {
-                embeds: [
-                    {
-                        title: "New ticket",
-                        description: `Type a message here to send it to the user, messages starting with \`${process.env.PREFIX}\` will not be sent to the user and messages starting with \`${process.env.ANON_PREFIX}\` will be sent anonymously.`,
-                        color: "DARK_AQUA",
-                        fields: [
-                            {
-                                name: "User",
-                                value: `<@${interaction.user.id}> (${interaction.user.id})`,
-                                inline: true
-                            },
-                            {
-                                name: "Roles",
-                                value: guild.members.cache.find((member) => member.id === interaction.user.id)
-                                    ?.roles.cache
-                                    .filter((role) => role.name !== "@everyone")
-                                    .map((role) => `<@&${role.id}>`)
-                                    .join(" ") || "None",
-                                inline: true
-                            }
-                        ],
-                        footer: {
-                            text: `${interaction.user.tag} | ${interaction.user.id}`,
-                            icon_url: interaction.user.avatarURL() || interaction.user.defaultAvatarURL,
-                        },
-                        timestamp: new Date(),
-                    }
-                ]
-            }
-        );
-
-        for (let role of catagory.pingingRoles) {
-            let message = await channel.send(`<@&${role}>`);
-            await message.delete();
+        if (!guild) {
+            console.log("Could not find guild", process.env.GUILD_ID);
+            return;
         }
 
-        let ticket = await db.ticket.create({
-            data: {
-                channelId: channel.id,
-                userId: interaction.user.id,
-                catagoryId: catagory.disCatagoryId,
-            },
-        });
-
-        await db.logs.create({
-            data: {
-                type: "CREATETICKET",
-                ticketId: ticket.ticketId,
-                userId: interaction.user.id,
-            }
-        });
+        let ticket: Ticket = await openTicket(guild, interaction.user, catagory);
 
         await interaction.followUp({
             embeds: [
@@ -130,6 +66,8 @@ export abstract class AppDiscord {
                 }
             ]
         });
+
+
     }
 
 }

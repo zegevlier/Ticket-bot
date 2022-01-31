@@ -5,8 +5,8 @@ const { PrismaClient } = Prisma;
 let db = new PrismaClient();
 
 async function seed() {
-    await db.catagories.deleteMany({});
-    await db.catagories.createMany({
+    await db.catagory.deleteMany({});
+    await db.catagory.createMany({
         data: [
             {
                 disCatagoryId: "937132793148895302",

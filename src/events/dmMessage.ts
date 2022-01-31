@@ -111,7 +111,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
         });
     } else {
         let catagoryOptions: MessageSelectOptionData[] = [];
-        let catagories = await db.catagories.findMany(
+        let catagories = await db.catagory.findMany(
             {
                 select: {
                     name: true,
