@@ -12,10 +12,6 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
             closed: false,
         }
     });
-    if (!ticket) {
-        return;
-    }
-
     if (message.content.startsWith(process.env.PREFIX || "=")) {
         const command = message.content.substring(process.env.PREFIX?.length || 1);
         const args = command.split(" ");
@@ -27,6 +23,11 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         handleTicketCommand(commandName, commandArgs, message, ticket, client);
         return;
     }
+    if (!ticket) {
+        return;
+    }
+
+
 
     let anon = false;
     let messageContent = message.content;

@@ -46,6 +46,25 @@ export abstract class AppDiscord {
             return;
         }
 
+        const openTickets = await db.ticket.findMany({
+            where: {
+                closed: false,
+                userId: interaction.user.id,
+            }
+        });
+        if (openTickets.length > 0) {
+            await interaction.followUp({
+                embeds: [
+                    {
+                        title: "You already have an open ticket!",
+                        description: "Please close it before creating a new one.",
+                        color: "RED",
+                    }
+                ]
+            });
+            return;
+        }
+
         const ticket: Ticket = await openTicket(guild, interaction.user, catagory);
 
         await interaction.followUp({
