@@ -38,6 +38,8 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
             return;
         }
 
+        console.log(message.attachments);
+
         await message.channel.send(
             {
                 embeds: [
@@ -50,7 +52,8 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                         },
                         timestamp: new Date(),
                     }
-                ]
+                ],
+                files: message.attachments.map((attachment) => (attachment)),
             }
         );
 
@@ -70,7 +73,8 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                         },
                         timestamp: new Date(),
                     }
-                ]
+                ],
+                files: message.attachments.map((attachment) => (attachment))
             }
         );
 
@@ -107,6 +111,9 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 ticketId: activeTicket.ticketId,
                 userId: message.author.id,
                 message: message.content,
+                extra: JSON.stringify({
+                    ...(message.attachments.size > 0 && { attachments: message.attachments.map((attachment) => (attachment)) }),
+                })
             }
         });
     } else {

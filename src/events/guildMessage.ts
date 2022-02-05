@@ -45,8 +45,9 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
                     icon_url: anon ? process.env.ANON_ICON_URL : message.author.avatarURL() ?? message.author.defaultAvatarURL,
                 },
                 timestamp: new Date(),
-            }
-        ]
+            },
+        ],
+        files: message.attachments.map((attachment) => (attachment))
     }).catch((error) => {
         if (error.code === 50007) {
             message.channel.send("Could not send message to user, they may have left the server or disabled DMs.");
@@ -77,7 +78,8 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
                 },
                 timestamp: new Date(),
             }
-        ]
+        ],
+        files: message.attachments.map((attachment) => (attachment))
     });
 
     addPing("USER", message.author.id, ticket.ticketId);
@@ -89,6 +91,9 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
             userId: message.author.id,
             message: messageContent,
             anonymous: anon,
+            extra: JSON.stringify({
+                ...(message.attachments.size > 0 && { attachments: message.attachments.map((attachment) => (attachment)) }),
+            })
         }
     });
 }

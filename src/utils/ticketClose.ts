@@ -99,7 +99,7 @@ export async function onTicketClose(ticket: Ticket, message: Message<boolean>, r
     });
     let logMessage = "";
     for (let log of logs) {
-        logMessage += `${log.createdAt.toISOString()} | ${log.userId} | ${log.type}${log.anonymous ? " | anonymous" : ""}${log.message === null ? "" : " | " + log.message}\n`;
+        logMessage += `${log.createdAt.toISOString()} | ${log.userId} | ${log.type}${log.anonymous ? " | anonymous" : ""}${log.message === null ? "" : " | " + log.message}${log.extra === null || log.extra === "{}" ? "" : " | " + log.extra}\n`;
     }
     let ticketOwner = message.guild.members.cache.find((member) => member.id === ticket?.userId);
     if (!ticketOwner) {

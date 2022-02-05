@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import { Intents, Interaction, Message } from "discord.js";
+import { Intents, Interaction } from "discord.js";
 import { Client } from "discordx";
 import { dirname, importx } from "@discordx/importer";
-import { Koa } from "@discordx/koa";
+import * as Sentry from '@sentry/node';
 
 import 'dotenv/config';
 
@@ -70,16 +70,8 @@ async function run() {
   await client.login(process.env.BOT_TOKEN); // provide your bot token
 }
 
-// const Sentry = require("@sentry/node");
-// or use es6 import statements
-import * as Sentry from '@sentry/node';
-
-// const Tracing = require("@sentry/tracing");
-// or use es6 import statements
-import * as Tracing from '@sentry/tracing';
-
 Sentry.init({
-  dsn: "https://1c8b7a3a389f491dad6a4c3fd7f41a66@o1136039.ingest.sentry.io/6188041",
+  dsn: process.env.SENTRY_DNS || "",
   integrations: [
     // enable HTTP calls tracing
     new Sentry.Integrations.Http({ tracing: true }),
@@ -92,8 +84,8 @@ Sentry.init({
 });
 
 const transaction = Sentry.startTransaction({
-  op: "test",
-  name: "My First Test Transaction",
+  op: "errors",
+  name: "Error transaction",
 });
 
 
