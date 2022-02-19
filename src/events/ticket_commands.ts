@@ -2,12 +2,14 @@ import { Ticket } from "@prisma/client";
 import { Client, Message, User } from "discord.js";
 import db from "../utils/db.js";
 import { acloseCommand } from "./commands/aclose_command.js";
+import { blacklistCommand } from "./commands/blacklist_command.js";
 
 import { closeCommand } from "./commands/close_command.js";
 import { fixCommand } from "./commands/fix_command.js";
 import { nocloseCommand } from "./commands/noclose_command.js";
 import { nopingCommand } from "./commands/noping_command.js";
 import { pingCommand } from "./commands/ping_command.js";
+import { unblacklistCommand } from "./commands/unblacklist_command.js";
 import { yescloseCommand } from "./commands/yesclose_command.js";
 
 export async function handleTicketCommand(command: string, args: string[], message: Message<boolean>, ticket: Ticket | null, client: Client): Promise<void> {
@@ -16,6 +18,11 @@ export async function handleTicketCommand(command: string, args: string[], messa
             case "fix":
                 await fixCommand(args, message, client);
                 break;
+            case "blacklist":
+                await blacklistCommand(args, message, client);
+                break;
+            case "unblacklist":
+                await unblacklistCommand(args, message, client);
         }
         return;
     }

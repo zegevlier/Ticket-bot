@@ -65,6 +65,26 @@ export abstract class AppDiscord {
             return;
         }
 
+        const user = await db.user.findUnique({
+            where: {
+                id: interaction.user.id,
+            }
+        });
+        if (user) {
+            if (user.blacklisted) {
+                await interaction.followUp({
+                    embeds: [
+                        {
+                            title: "You are blacklisted!",
+                            description: "Please contact a staff member if you think this is wrong.",
+                            color: "RED",
+                        }
+                    ]
+                });
+                return;
+            }
+        }
+
         const ticket: Ticket = await openTicket(guild, interaction.user, catagory);
 
         await interaction.followUp({
