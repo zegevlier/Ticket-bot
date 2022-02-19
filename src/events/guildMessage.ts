@@ -83,7 +83,15 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         files: message.attachments.map((attachment) => (attachment))
     });
 
-    addPing("USER", message.author.id, ticket.ticketId);
+    const staffuser = await db.user.findUnique({
+        where: {
+            id: message.author.id,
+        }
+    });
+
+    if ((staffuser && staffuser.pingPreference) || !staffuser) {
+        addPing("USER", message.author.id, ticket.ticketId);
+    }
 
     await db.logs.create({
         data: {

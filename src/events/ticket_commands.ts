@@ -8,6 +8,7 @@ import { closeCommand } from "./commands/close_command.js";
 import { fixCommand } from "./commands/fix_command.js";
 import { nocloseCommand } from "./commands/noclose_command.js";
 import { nopingCommand } from "./commands/noping_command.js";
+import { pingprefCommand } from "./commands/pingpref_command.js";
 import { pingCommand } from "./commands/ping_command.js";
 import { unblacklistCommand } from "./commands/unblacklist_command.js";
 import { yescloseCommand } from "./commands/yesclose_command.js";
@@ -23,6 +24,10 @@ export async function handleTicketCommand(command: string, args: string[], messa
                 break;
             case "unblacklist":
                 await unblacklistCommand(args, message, client);
+                break;
+            case "pingpref":
+                await pingprefCommand(args, message, client);
+                break;
         }
         return;
     }
