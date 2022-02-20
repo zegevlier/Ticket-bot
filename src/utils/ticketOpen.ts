@@ -1,10 +1,16 @@
 import { Ticket, Catagory } from "@prisma/client";
 import { Guild, User } from "discord.js";
 import db from "./db.js";
+import { isPaid } from "./isPaid.js";
 
 export async function openTicket(guild: Guild, user: User, catagory: Catagory): Promise<Ticket> {
+    let channelName = `${user.username.replace(/[^a-zA-Z0-9]/g, "").substring(0, 21) ?? user.id}-${user.discriminator}`;
+    const member = await guild.members.fetch(user.id);
+    if (await isPaid(member)) {
+        channelName += "-paid";
+    }
     const channel = await guild.channels.create(
-        `${user.username.replace(/[^a-zA-Z0-9]/g, "") ?? user.id}-${user.discriminator}`,
+        channelName,
         {
             type: "GUILD_TEXT",
             parent: catagory.disCatagoryId,
@@ -43,11 +49,12 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
             ]
         }
     );
+    const pingMessage = catagory.pingingRoles.reduce((acc, ping) => {
+        return acc + `<@&${ping}> `;
+    }, "");
 
-    // TODO: Should be switched to single-message
-    for (let role of catagory.pingingRoles) {
-        const message = await channel.send(`<@&${role}>`);
-        await message.delete();
+    if (pingMessage !== "") {
+        await (await channel.send(pingMessage)).delete();
     }
 
     const ticket = await db.ticket.create({

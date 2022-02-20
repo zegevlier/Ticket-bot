@@ -52,6 +52,7 @@ export abstract class AppDiscord {
                 userId: interaction.user.id,
             }
         });
+
         if (openTickets.length > 0) {
             await interaction.followUp({
                 embeds: [
@@ -70,6 +71,7 @@ export abstract class AppDiscord {
                 id: interaction.user.id,
             }
         });
+
         if (user) {
             if (user.blacklisted) {
                 await interaction.followUp({
