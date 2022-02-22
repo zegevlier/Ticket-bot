@@ -23,19 +23,23 @@ export const client = new Client({
 });
 
 client.once("ready", async () => {
+  console.log("Initializing...");
   // make sure all guilds are in cache
   await client.guilds.fetch();
 
+  // await client.initGuildApplicationCommands("931625711297511475", [], { log: true });
   // init all application commands
   await client.initApplicationCommands({
-    guild: { log: true },
+    guild: {
+      log: true
+    },
     global: {
-      log: false,
-      disable: {
-        add: true,
-        delete: true,
-        update: true,
-      }
+      log: true,
+      // disable: {
+      // add: true,
+      // delete: true,
+      // update: true,
+      // }
     },
   });
 
@@ -44,9 +48,9 @@ client.once("ready", async () => {
 
   // uncomment this line to clear all guild commands,
   // useful when moving to global commands from guild commands
-  //  await client.clearApplicationCommands(
-  //    ...client.guilds.cache.map((g) => g.id)
-  //  );
+  // await client.clearApplicationCommands(
+  // ...client.guilds.cache.map((g) => g.id)
+  // );
 
   console.log("Bot started");
 });
@@ -56,11 +60,8 @@ client.on("interactionCreate", (interaction: Interaction) => {
 });
 
 async function run() {
-  // with cjs
-  // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
-  // with ems
   await importx(
-    dirname(import.meta.url) + "/{events,commands,api}/**/*.{ts,js}"
+    dirname(import.meta.url) + "/{events,commands}/**/*.{ts,js}"
   );
 
   // let's start the bot

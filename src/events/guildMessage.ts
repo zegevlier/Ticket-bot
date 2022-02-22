@@ -2,7 +2,7 @@ import { Client } from "discord.js";
 import { ArgsOf } from "discordx";
 import { addPing } from "../utils/addPing.js";
 import db from "../utils/db.js";
-import { handleTicketCommand } from "./ticket_commands.js";
+import { logComment } from "../utils/logComment.js";
 
 export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Client) {
     console.log("Message Created", client.user?.username, message.content);
@@ -12,22 +12,15 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
             closed: false,
         }
     });
-    if (message.content.startsWith(process.env.PREFIX || "=")) {
-        const command = message.content.substring(process.env.PREFIX?.length || 1);
-        const args = command.split(" ");
-        const commandName = args.shift();
-        const commandArgs = args;
-        if (commandName === undefined) {
-            return;
-        }
-        handleTicketCommand(commandName, commandArgs, message, ticket, client);
-        return;
-    }
+
     if (!ticket) {
         return;
     }
 
-
+    if (message.content.startsWith(process.env.PREFIX || "=")) {
+        logComment(message.content.substring(1), ticket, message.author);
+        return;
+    }
 
     let anon = false;
     let messageContent = message.content;

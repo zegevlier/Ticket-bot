@@ -78,7 +78,7 @@ export abstract class AppDiscord {
                     embeds: [
                         {
                             title: "You are blacklisted!",
-                            description: "Please contact a staff member if you think this is wrong.",
+                            description: "Please contact a staff member if you think this is wrong. Blacklist reason: ```" + user.blacklistReason + "```",
                             color: "RED",
                         }
                     ]
