@@ -3,16 +3,12 @@ import { ArgsOf } from "discordx";
 import db from "../utils/db.js";
 
 export async function handleDm([message]: ArgsOf<"messageCreate">, client: Client) {
-    console.log("DM Created", client.user?.username, message.content);
-
     const activeTicket = await db.ticket.findFirst({
         where: {
             closed: false,
             userId: message.author.id,
         },
         select: {
-            closable: true,
-            userId: true,
             channelId: true,
             ticketId: true,
             activePings: {
@@ -37,8 +33,6 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
             message.reply("An unknown error occurred! Please contact a staff member.");
             return;
         }
-
-        console.log(message.attachments);
 
         await message.channel.send(
             {

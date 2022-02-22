@@ -12,6 +12,9 @@ import { Ticket } from "@prisma/client";
 export abstract class AppDiscord {
     @On("messageCreate")
     async onMessage([message]: ArgsOf<"messageCreate">, client: Client) {
+        if (message.author.bot) {
+            return;
+        }
         if (message.author.id !== client.user?.id) {
             if (message.inGuild()) {
                 await handleGuild([message], client);
@@ -110,5 +113,4 @@ export abstract class AppDiscord {
             ]
         });
     }
-
 }

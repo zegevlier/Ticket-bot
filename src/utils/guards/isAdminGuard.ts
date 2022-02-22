@@ -1,6 +1,6 @@
 import { GuardFunction } from "discordx";
 import { CommandInteraction, GuildMember } from "discord.js";
-import { isAdmin } from "../isAdmin.js";
+import { isAdmin } from "../hasRoles.js";
 
 export const isAdminGuard: GuardFunction<CommandInteraction> =
     async (interaction: CommandInteraction, client, next, guardData) => {

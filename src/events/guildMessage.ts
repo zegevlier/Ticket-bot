@@ -5,7 +5,6 @@ import db from "../utils/db.js";
 import { logComment } from "../utils/logComment.js";
 
 export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Client) {
-    console.log("Message Created", client.user?.username, message.content);
     const ticket = await db.ticket.findFirst({
         where: {
             channelId: message.channel.id,
@@ -51,7 +50,6 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         return;
     });
 
-    await message.delete();
     let user = message.guild?.members.cache.find((member) => member.id === ticket?.userId);
     if (!user) {
         console.log("Could not find user in guild.", ticket.userId);
@@ -75,6 +73,8 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         ],
         files: message.attachments.map((attachment) => (attachment))
     });
+
+    await message.delete();
 
     const staffuser = await db.user.findUnique({
         where: {
