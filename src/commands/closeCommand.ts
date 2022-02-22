@@ -7,7 +7,7 @@ import {
     Slash,
     SlashOption,
 } from "discordx";
-import { inTicketGuard } from "../guards/inTicketGuard.js";
+import { inTicketGuard } from "../utils/guards/inTicketGuard.js";
 import { onTicketClose } from "../utils/ticketClose.js";
 
 @Discord()

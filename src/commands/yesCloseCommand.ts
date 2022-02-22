@@ -6,7 +6,7 @@ import {
     Guard,
     Slash,
 } from "discordx";
-import { inTicketGuard } from "../guards/inTicketGuard.js";
+import { inTicketGuard } from "../utils/guards/inTicketGuard.js";
 import db from "../utils/db.js";
 
 @Discord()

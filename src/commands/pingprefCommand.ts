@@ -7,7 +7,7 @@ import {
     SlashChoice,
     SlashOption,
 } from "discordx";
-import { isAdminGuard } from "../guards/isAdminGuard.js";
+import { isAdminGuard } from "../utils/guards/isAdminGuard.js";
 import db from "../utils/db.js";
 
 @Discord()

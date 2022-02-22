@@ -1,10 +1,10 @@
 import { GuardFunction } from "discordx";
 import { CommandInteraction, GuildMember } from "discord.js";
-import { isAdmin } from "../utils/isAdmin.js";
+import { isStaff } from "../isStaff.js";
 
-export const isAdminGuard: GuardFunction<CommandInteraction> =
+export const isStaffGuard: GuardFunction<CommandInteraction> =
     async (interaction: CommandInteraction, client, next, guardData) => {
-        if (!await isAdmin(interaction.member as GuildMember)) {
+        if (!await isStaff(interaction.member as GuildMember)) {
             await interaction.reply({
                 ephemeral: true,
                 embeds: [{

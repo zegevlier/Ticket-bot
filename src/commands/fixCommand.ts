@@ -6,7 +6,7 @@ import {
     Slash,
     SlashOption,
 } from "discordx";
-import { isStaffGuard } from "../guards/isStaffGuard.js";
+import { isStaffGuard } from "../utils/guards/isStaffGuard.js";
 import db from "../utils/db.js";
 
 @Discord()

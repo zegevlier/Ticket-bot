@@ -1,6 +1,6 @@
 import { GuardFunction } from "discordx";
 import { CommandInteraction } from "discord.js";
-import db from "../utils/db.js";
+import db from "../db.js";
 
 export const inTicketGuard: GuardFunction<CommandInteraction> =
     async (interaction: CommandInteraction, client, next, guardData) => {
