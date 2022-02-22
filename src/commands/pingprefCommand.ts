@@ -9,12 +9,13 @@ import {
 } from "discordx";
 import { isAdminGuard } from "../utils/guards/isAdminGuard.js";
 import db from "../utils/db.js";
+import { isStaffGuard } from "../utils/guards/isStaffGuard.js";
 
 @Discord()
 class pingprefCommand {
     @Slash("pingpref")
     @Guard(
-        isAdminGuard
+        isStaffGuard
     )
     async hello(
         @SlashChoice("Enabled", "on")

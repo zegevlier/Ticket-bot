@@ -16,6 +16,7 @@
 - [x] Make commands work with pings / return proper errors
 - [x] Fix not a slowflake error in discordjs
 - [x] Add blacklist reason
+- [x] ~~=new command~~ Add right click to make ticket in first category
 - [ ] Check over open tickets for reminder pings etc.
 - [ ] Add rating system
 - [ ] Stats system / leaderboard
@@ -25,5 +26,4 @@
 - [ ] Nice error + notify when the category is full
 - [ ] Placeholder in first message for paid / not paid and response time.
 - [ ] Make config instead of env vars
-- [ ] =new command
 - [ ] Show latest x logs for user when user creates ticket
