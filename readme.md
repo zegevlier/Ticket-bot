@@ -17,13 +17,14 @@
 - [x] Fix not a slowflake error in discordjs
 - [x] Add blacklist reason
 - [x] ~~=new command~~ Add right click to make ticket in first category
+- [x] Show latest x logs for user when user creates ticket
+- [ ] Make config instead of env vars
+- [ ] Add "Quick reply" system for common issues
+- [ ] Move categories to config (really doesn't need to be in db)
 - [ ] Check over open tickets for reminder pings etc.
+- [ ] Autoclose ticket when user leaves (maybe just a message?)
+- [ ] Nice error + notify when the category is full (hell to test)
 - [ ] Add rating system
 - [ ] Stats system / leaderboard
-- [ ] Add "Quick reply" system for common issues
 - [ ] Ask question before allowing to create ticket
-- [ ] Autoclose ticket when user leaves
-- [ ] Nice error + notify when the category is full
 - [ ] Placeholder in first message for paid / not paid and response time.
-- [ ] Make config instead of env vars
-- [ ] Show latest x logs for user when user creates ticket

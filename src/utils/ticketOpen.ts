@@ -6,7 +6,8 @@ import { isPaid } from "./hasRoles.js";
 export async function openTicket(guild: Guild, user: User, catagory: Catagory): Promise<Ticket> {
     let channelName = `${user.username.replace(/[^a-zA-Z0-9]/g, "").substring(0, 21) ?? user.id}-${user.discriminator}`;
     const member = await guild.members.fetch(user.id);
-    if (await isPaid(member)) {
+    const isPaidUser = await isPaid(member);
+    if (isPaidUser) {
         channelName += "-paid";
     }
     const channel = await guild.channels.create(
@@ -16,6 +17,24 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
             parent: catagory.disCatagoryId,
         }
     );
+
+    const oldTickets = await db.ticket.findMany({
+        take: 5,
+        orderBy: { updatedAt: "desc" },
+        where: {
+            userId: user.id,
+        },
+        select: {
+            ticketId: true,
+            updatedAt: true,
+        }
+    });
+
+    // Will be in the format
+    // [<t:${ticket.updatedAt}:D](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.html)\n
+    const oldTicketsMessage = oldTickets.map(ticket => {
+        return `[<t:${Math.round(ticket.updatedAt.getTime() / 1000)}:D>](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.html)\n`;
+    }).reduce((acc, cur) => acc + cur, "");
 
     channel.send(
         {
@@ -38,7 +57,19 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
                                 .map((role) => `<@&${role.id}>`)
                                 .join(" ") || "None",
                             inline: true
-                        }
+                        },
+                        {
+                            name: "Paid",
+                            value: isPaidUser ? "Yes" : "No",
+                            inline: true
+                        },
+                        oldTicketsMessage ? {
+                            name: "Old tickets",
+                            value: oldTicketsMessage,
+                        } : {
+                            name: "Old tickets",
+                            value: "None",
+                        },
                     ],
                     footer: {
                         text: `${user.tag} | ${user.id}`,
