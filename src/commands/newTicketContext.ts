@@ -11,8 +11,9 @@ export abstract class newTicket {
         isAdminGuard
     )
     async userHandler(interaction: UserContextMenuInteraction) {
+
         if (!interaction.guild) {
-            interaction.reply({
+            await interaction.reply({
                 ephemeral: true,
                 content: "That's strange!"
             });
@@ -21,7 +22,7 @@ export abstract class newTicket {
 
         const catagory = await db.catagory.findFirst();
         if (!catagory) {
-            interaction.reply({
+            await interaction.reply({
                 ephemeral: true,
                 content: "There are no catagories!"
             });
@@ -29,7 +30,7 @@ export abstract class newTicket {
         }
 
         const ticket = await openTicket(interaction.guild, interaction.targetUser, catagory);
-        interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             content: `Ticket created! <#${ticket.channelId}>`
         });
