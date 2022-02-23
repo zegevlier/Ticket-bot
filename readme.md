@@ -18,11 +18,11 @@
 - [x] Add blacklist reason
 - [x] ~~=new command~~ Add right click to make ticket in first category
 - [x] Show latest x logs for user when user creates ticket
-- [ ] Make config instead of env vars
+- [x] Make config instead of env vars
+- [ ] Move categories to config (really doesn't need to be in db)
 - [ ] Add "Quick reply" system for common issues
 - [ ] Add move command to move the ticket to another category
 - [ ] Fix gifs [IMPORTANT, BREAKING]
-- [ ] Move categories to config (really doesn't need to be in db)
 - [ ] Check over open tickets for reminder pings etc.
 - [ ] Autoclose ticket when user leaves (maybe just a message?)
 - [ ] Nice error + notify when the category is full (hell to test)

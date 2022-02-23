@@ -42,11 +42,11 @@ export abstract class newTicket {
                     description: catagory.openMessage,
                     color: "DARK_AQUA",
                     fields: [
-                        // Only add note if `process.env.NOTE` is set
-                        ...(process.env.NOTE ?
+                        // Only add note if `global.config.general_note` is set
+                        ...(global.config.general_note ?
                             [{
                                 name: "NOTE:",
-                                value: process.env.NOTE,
+                                value: global.config.general_note,
                             }] : []),
                     ],
                     footer: {

@@ -1,8 +1,8 @@
-import "reflect-metadata";
 import { Intents, Interaction } from "discord.js";
 import { Client } from "discordx";
 import { dirname, importx } from "@discordx/importer";
 import * as Sentry from '@sentry/node';
+import configYaml from "config-yaml";
 
 import 'dotenv/config';
 
@@ -27,7 +27,6 @@ client.once("ready", async () => {
   // make sure all guilds are in cache
   await client.guilds.fetch();
 
-  // await client.initGuildApplicationCommands("931625711297511475", [], { log: true });
   // init all application commands
   await client.initApplicationCommands({
     guild: {
@@ -35,22 +34,11 @@ client.once("ready", async () => {
     },
     global: {
       log: true,
-      // disable: {
-      // add: true,
-      // delete: true,
-      // update: true,
-      // }
     },
   });
 
   // init permissions; enabled log to see changes
   await client.initApplicationPermissions(true);
-
-  // uncomment this line to clear all guild commands,
-  // useful when moving to global commands from guild commands
-  // await client.clearApplicationCommands(
-  // ...client.guilds.cache.map((g) => g.id)
-  // );
 
   console.log("Bot started");
 });
@@ -60,6 +48,7 @@ client.on("interactionCreate", (interaction: Interaction) => {
 });
 
 async function run() {
+  global.config = configYaml(`./config.yaml`);
   await importx(
     dirname(import.meta.url) + "/{events,commands}/**/*.{ts,js}"
   );

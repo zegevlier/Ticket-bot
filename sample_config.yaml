@@ -1,0 +1,32 @@
+guild_id: ""
+log_channel_id: ""
+
+silent_prefix: "="
+general_note: "**YOUR FIRST MESSAGE WAS NOT SENT, YOU NEED TO SEND IT AGAIN FOR STAFF TO RECEIVE IT!** Message edits & deletes are also not transmitted to staff."
+
+anon:
+  prefix: "!"
+  icon_url: "https://discord.com/assets/c09a43a372ba81e3018c3151d4ed4773.png"
+  name: "Ticket bot"
+
+storage_url_prefix: "https://[]/"
+
+categories:
+  - name: "General"
+    openMessage: "Please specify you issue"
+    disCategoryId: ""
+    description: "General issues"
+    pingingRoles: [""]
+  - name: "Account"
+    openMessage: "You have an account issue!"
+    disCategoryId: ""
+    description: "Account related issues"
+    pingingRoles: [""]
+
+roles:
+  admin:
+    - ""
+  staff:
+    - ""
+  paid:
+    - ""

@@ -1,14 +1,16 @@
 import { GuildMember } from "discord.js";
 
 export async function isAdmin(user: GuildMember): Promise<boolean> {
-    if (!process.env.ADMIN_ROLE) {
-        return false;
+    for (const id of config.roles.admin) {
+        if (user.roles.cache.has(id)) {
+            return true;
+        }
     }
-    return (user.roles.cache.has(process.env.ADMIN_ROLE));
+    return false;
 }
 
 export async function isPaid(user: GuildMember): Promise<boolean> {
-    for (const id of process.env.PAID_ROLES?.split(",") || []) {
+    for (const id of config.roles.paid) {
         if (user.roles.cache.has(id)) {
             return true;
         }
@@ -17,7 +19,7 @@ export async function isPaid(user: GuildMember): Promise<boolean> {
 }
 
 export async function isStaff(user: GuildMember): Promise<boolean> {
-    for (const id of process.env.STAFF_ROLES?.split(",") || []) {
+    for (const id of config.roles.staff) {
         if (user.roles.cache.has(id)) {
             return true;
         }

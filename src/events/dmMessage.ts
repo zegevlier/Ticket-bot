@@ -22,9 +22,9 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
     });
 
     if (activeTicket) {
-        const guild = client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
+        const guild = client.guilds.cache.find((guild) => guild.id === global.config.guild_id);
         if (!guild) {
-            console.log("Could not find guild", process.env.GUILD_ID);
+            console.log("Could not find guild", global.config.guild_id);
             return;
         }
         const channel = guild.channels.cache.find((channel) => channel.id === activeTicket.channelId);

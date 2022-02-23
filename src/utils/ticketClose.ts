@@ -38,8 +38,8 @@ export async function onTicketClose(ticket: Ticket, channel: TextBasedChannel, u
                 description: reason,
                 color: "ORANGE",
                 author: {
-                    name: anon ? process.env.ANON_NAME : user.tag,
-                    icon_url: anon ? process.env.ANON_ICON_URL : user.avatarURL() ?? user.defaultAvatarURL,
+                    name: anon ? config.anon.name : user.tag,
+                    icon_url: anon ? config.anon.icon_url : user.avatarURL() ?? user.defaultAvatarURL,
                 },
                 timestamp: new Date(),
             }
@@ -51,7 +51,7 @@ export async function onTicketClose(ticket: Ticket, channel: TextBasedChannel, u
 
     await channel.delete();
 
-    let logsChannel = guild.channels.cache.find(channel => channel.id === process.env.LOG_CHANNEL_ID);
+    let logsChannel = guild.channels.cache.find(channel => channel.id === config.log_channel_id);
     if (logsChannel === undefined || logsChannel.type !== "GUILD_TEXT") {
         console.log("Could not log ticket! Log channel not found");
         return;
@@ -113,12 +113,12 @@ export async function onTicketClose(ticket: Ticket, channel: TextBasedChannel, u
                     fields: [
                         {
                             name: "Pretty logs",
-                            value: `[Click here](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.html)`,
+                            value: `[Click here](${config.storage_url_prefix}${ticket.ticketId}.html)`,
                             inline: true,
                         },
                         {
                             name: "Full logs",
-                            value: `[Click here](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.txt)`,
+                            value: `[Click here](${config.storage_url_prefix}${ticket.ticketId}.txt)`,
                             inline: true,
                         },
                         {

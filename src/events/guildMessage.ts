@@ -16,16 +16,16 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         return;
     }
 
-    if (message.content.startsWith(process.env.PREFIX || "=")) {
-        logComment(message.content.substring(1), ticket, message.author);
+    if (message.content.startsWith(config.silent_prefix)) {
+        logComment(message.content.substring(config.silent_prefix.length), ticket, message.author);
         return;
     }
 
     let anon = false;
     let messageContent = message.content;
-    if (message.content.startsWith(process.env.ANON_PREFIX || "!")) {
+    if (message.content.startsWith(config.anon.prefix)) {
         anon = true;
-        messageContent = message.content.substring(process.env.ANON_PREFIX?.length || 1);
+        messageContent = message.content.substring(config.anon.prefix.length);
     }
 
     await client.users.send(ticket.userId, {
@@ -34,8 +34,8 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
                 description: messageContent,
                 color: "GREEN",
                 author: {
-                    name: anon ? process.env.ANON_NAME || "Anonymous" : message.author.tag,
-                    icon_url: anon ? process.env.ANON_ICON_URL : message.author.avatarURL() ?? message.author.defaultAvatarURL,
+                    name: anon ? config.anon.name || "Anonymous" : message.author.tag,
+                    icon_url: anon ? config.anon.icon_url : message.author.avatarURL() ?? message.author.defaultAvatarURL,
                 },
                 timestamp: new Date(),
             },

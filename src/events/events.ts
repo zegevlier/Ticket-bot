@@ -42,10 +42,10 @@ export abstract class AppDiscord {
             components: [],
         });
 
-        const guild = interaction.client.guilds.cache.find((guild) => guild.id === process.env.GUILD_ID);
+        const guild = interaction.client.guilds.cache.find((guild) => guild.id === global.config.guild_id);
 
         if (!guild) {
-            console.log("Could not find guild", process.env.GUILD_ID);
+            console.log("Could not find guild", global.config.guild_id);
             return;
         }
 
@@ -99,11 +99,11 @@ export abstract class AppDiscord {
                     description: catagory.openMessage,
                     color: "DARK_AQUA",
                     fields: [
-                        // Only add note if `process.env.NOTE` is set
-                        ...(process.env.NOTE ?
+                        // Only add note if `config.general_note` is set
+                        ...(config.general_note ?
                             [{
                                 name: "NOTE:",
-                                value: process.env.NOTE,
+                                value: config.general_note,
                             }] : []),
                     ],
                     footer: {

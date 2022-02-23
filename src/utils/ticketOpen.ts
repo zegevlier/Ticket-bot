@@ -30,10 +30,8 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
         }
     });
 
-    // Will be in the format
-    // [<t:${ticket.updatedAt}:D](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.html)\n
     const oldTicketsMessage = oldTickets.map(ticket => {
-        return `[<t:${Math.round(ticket.updatedAt.getTime() / 1000)}:D>](${process.env.STORAGE_URL_PREFIX}${ticket.ticketId}.html)\n`;
+        return `[<t:${Math.round(ticket.updatedAt.getTime() / 1000)}:D>](${config.storage_url_prefix}${ticket.ticketId}.html)\n`;
     }).reduce((acc, cur) => acc + cur, "");
 
     channel.send(
@@ -41,7 +39,7 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
             embeds: [
                 {
                     title: "New ticket",
-                    description: `Type a message here to send it to the user, messages starting with \`${process.env.PREFIX}\` will not be sent to the user and messages starting with \`${process.env.ANON_PREFIX}\` will be sent anonymously.`,
+                    description: `Type a message here to send it to the user, messages starting with \`${config.silent_prefix}\` will not be sent to the user and messages starting with \`${config.anon.prefix}\` will be sent anonymously.`,
                     color: "DARK_AQUA",
                     fields: [
                         {
@@ -105,7 +103,7 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
         }
     });
 
-    const logsChannel = guild.channels.cache.find(channel => channel.id === process.env.LOG_CHANNEL_ID);
+    const logsChannel = guild.channels.cache.find(channel => channel.id === config.log_channel_id);
     if (logsChannel === undefined || logsChannel.type !== "GUILD_TEXT") {
         console.log("Could not log ticket! Log channel not found");
         return ticket;
