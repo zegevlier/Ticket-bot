@@ -21,7 +21,7 @@
 - [x] Make config instead of env vars
 - [x] Move categories to config (really doesn't need to be in db)
 - [ ] Add "Quick reply" system for common issues
-- [ ] Add move command to move the ticket to another category
+- [x] Add move command to move the ticket to another category
 - [ ] Fix gifs [IMPORTANT, BREAKING]
 - [ ] Check over open tickets for reminder pings etc.
 - [ ] Autoclose ticket when user leaves (maybe just a message?)
