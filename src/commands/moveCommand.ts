@@ -23,7 +23,7 @@ class closeCommand {
         _client: Client,
         guardData: { ticket: Ticket }
     ): Promise<void> {
-        const { ticket } = guardData;
+        // const { ticket } = guardData;
         const categories = config.categories;
         const categoryOptions: MessageSelectOptionData[] = categories.map((category) => {
             return {
@@ -98,6 +98,5 @@ class closeCommand {
                 }),
             }
         });
-
     }
 }

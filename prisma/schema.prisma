@@ -24,6 +24,8 @@ enum LogType {
   YESCLOSE
   BLACKLIST
   UNBLACKLIST
+  MOVE
+  QUICKREPLY
 }
 
 model User {
@@ -68,4 +70,12 @@ model Logs {
   createdAt DateTime @default(now())
   Ticket    Ticket?  @relation(fields: [ticketId], references: [ticketId])
   ticketId  String?
+}
+
+model QuickReply {
+  id      String  @id @default(cuid())
+  trigger String
+  title   String
+  content String?
+  url     String?
 }
