@@ -26,6 +26,8 @@ enum LogType {
   UNBLACKLIST
   MOVE
   QUICKREPLY
+  QUICKREPLYREMOVE
+  QUICKREPLYADD
 }
 
 model User {
@@ -73,9 +75,8 @@ model Logs {
 }
 
 model QuickReply {
-  id      String  @id @default(cuid())
-  trigger String
+  trigger String  @id
   title   String
-  content String?
+  content String
   url     String?
 }

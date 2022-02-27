@@ -163,7 +163,7 @@ async function sendQuickReply(interaction: CommandInteraction | SelectMenuIntera
             userId: interaction.user.id,
             message: quickReply.content ?? "",
             extra: JSON.stringify({
-                quickreply: quickReply.id,
+                quickreply: quickReply.trigger,
             })
         }
     });
