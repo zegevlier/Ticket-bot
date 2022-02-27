@@ -111,29 +111,21 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
             }
         });
     } else {
-        const catagories = await db.catagory.findMany(
-            {
-                select: {
-                    name: true,
-                    catagoryId: true,
-                    description: true,
-                }
-            }
-        );
-        const catagoryOptions: MessageSelectOptionData[] = catagories.map((catagory) => {
+        const categories = config.categories;
+        const categoryOptions: MessageSelectOptionData[] = categories.map((category) => {
             return {
-                label: catagory.name,
-                value: catagory.catagoryId,
-                description: catagory.description
+                label: category.name,
+                value: category.id,
+                description: category.description
             };
         });
         const menu = new MessageSelectMenu()
-            .addOptions(catagoryOptions)
-            .setCustomId("catagory-menu");
+            .addOptions(categoryOptions)
+            .setCustomId("category-menu");
 
 
         message.channel.send({
-            content: "Please select a catagory",
+            content: "Please select a category",
             components: [new MessageActionRow().addComponents(menu)],
         });
     }

@@ -24,21 +24,17 @@ export abstract class AppDiscord {
         }
     }
 
-    @SelectMenuComponent("catagory-menu")
-    async catagoryMenu(interaction: SelectMenuInteraction) {
-        const catagory = await db.catagory.findUnique({
-            where: {
-                catagoryId: interaction.values?.[0],
-            }
-        });
+    @SelectMenuComponent("category-menu")
+    async categoryMenu(interaction: SelectMenuInteraction) {
+        const category = config.categories.find((category) => category.id === interaction.values?.[0]);
 
-        if (!catagory) {
-            console.log("Could not find catagory", interaction.values?.[0]);
+        if (!category) {
+            console.log("Could not find category", interaction.values?.[0]);
             return;
         }
 
         await interaction.update({
-            content: `Creating ticket in ${catagory.name}. Please wait...`,
+            content: `Creating ticket in ${category.name}. Please wait...`,
             components: [],
         });
 
@@ -90,13 +86,13 @@ export abstract class AppDiscord {
             }
         }
 
-        const ticket: Ticket = await openTicket(guild, interaction.user, catagory);
+        const ticket: Ticket = await openTicket(guild, interaction.user, category);
 
         await interaction.followUp({
             embeds: [
                 {
                     title: "Ticket created!",
-                    description: catagory.openMessage,
+                    description: category.openMessage,
                     color: "DARK_AQUA",
                     fields: [
                         // Only add note if `config.general_note` is set

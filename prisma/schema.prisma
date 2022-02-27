@@ -37,7 +37,7 @@ model Ticket {
   ticketId       String   @id @default(cuid())
   channelId      String
   userId         String
-  catagoryId     String
+  categoryId     String
   closed         Boolean  @default(false)
   closedId       String? // ID of who closed the channel.
   closedReason   String? // Reason for closing the channel.
@@ -47,17 +47,6 @@ model Ticket {
   updatedAt      DateTime @updatedAt
   activePings    Ping[]
   messages       Logs[]
-}
-
-model Catagory {
-  catagoryId    String   @id @default(cuid())
-  name          String
-  description   String
-  pingingRoles  String[]
-  disCatagoryId String
-  openMessage   String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
 }
 
 model Ping {

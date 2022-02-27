@@ -20,8 +20,8 @@ export abstract class newTicket {
             return;
         }
 
-        const catagory = await db.catagory.findFirst();
-        if (!catagory) {
+        const category = config.categories.at(0);
+        if (!category) {
             await interaction.reply({
                 ephemeral: true,
                 content: "There are no catagories!"
@@ -29,7 +29,7 @@ export abstract class newTicket {
             return;
         }
 
-        const ticket = await openTicket(interaction.guild, interaction.targetUser, catagory);
+        const ticket = await openTicket(interaction.guild, interaction.targetUser, category);
         await interaction.reply({
             ephemeral: true,
             content: `Ticket created! <#${ticket.channelId}>`
@@ -39,7 +39,7 @@ export abstract class newTicket {
             embeds: [
                 {
                     title: "Ticket created!",
-                    description: catagory.openMessage,
+                    description: category.openMessage,
                     color: "DARK_AQUA",
                     fields: [
                         // Only add note if `global.config.general_note` is set

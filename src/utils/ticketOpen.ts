@@ -1,9 +1,10 @@
-import { Ticket, Catagory } from "@prisma/client";
+import { Ticket } from "@prisma/client";
 import { Guild, User } from "discord.js";
+import { category } from "../global.js";
 import db from "./db.js";
 import { isPaid } from "./hasRoles.js";
 
-export async function openTicket(guild: Guild, user: User, catagory: Catagory): Promise<Ticket> {
+export async function openTicket(guild: Guild, user: User, category: category): Promise<Ticket> {
     let channelName = `${user.username.replace(/[^a-zA-Z0-9]/g, "").substring(0, 21) ?? user.id}-${user.discriminator}`;
     const member = await guild.members.fetch(user.id);
     const isPaidUser = await isPaid(member);
@@ -14,7 +15,7 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
         channelName,
         {
             type: "GUILD_TEXT",
-            parent: catagory.disCatagoryId,
+            parent: category.disCategoryId,
         }
     );
 
@@ -79,7 +80,7 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
         }
     );
 
-    const pingMessage = catagory.pingingRoles.reduce((acc, ping) => {
+    const pingMessage = category.pingingRoles.reduce((acc, ping) => {
         return acc + `<@&${ping}> `;
     }, "");
 
@@ -91,7 +92,7 @@ export async function openTicket(guild: Guild, user: User, catagory: Catagory): 
         data: {
             channelId: channel.id,
             userId: user.id,
-            catagoryId: catagory.disCatagoryId,
+            categoryId: category.disCategoryId,
         },
     });
 

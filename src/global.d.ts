@@ -4,12 +4,13 @@ type anon = {
     name: string;
 }
 
-type category = {
+export type category = {
     name: string;
     openMessage: string;
     disCategoryId: string;
     description: string;
     pingingRoles: string[];
+    id: string;
 }
 
 type roles = {
