@@ -20,7 +20,7 @@
 - [x] Show latest x logs for user when user creates ticket
 - [x] Make config instead of env vars
 - [x] Move categories to config (really doesn't need to be in db)
-- [ ] Add "Quick reply" system for common issues
+- [x] Add "Quick reply" system for common issues
 - [x] Add move command to move the ticket to another category
 - [ ] Fix gifs [IMPORTANT, BREAKING]
 - [ ] Check over open tickets for reminder pings etc.
