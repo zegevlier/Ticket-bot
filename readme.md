@@ -19,7 +19,7 @@
 - [x] ~~=new command~~ Add right click to make ticket in first category
 - [x] Show latest x logs for user when user creates ticket
 - [x] Make config instead of env vars
-- [ ] Move categories to config (really doesn't need to be in db)
+- [x] Move categories to config (really doesn't need to be in db)
 - [ ] Add "Quick reply" system for common issues
 - [ ] Add move command to move the ticket to another category
 - [ ] Fix gifs [IMPORTANT, BREAKING]
@@ -30,3 +30,5 @@
 - [ ] Stats system / leaderboard
 - [ ] Ask question before allowing to create ticket
 - [ ] Placeholder in first message for paid / not paid and response time.
+- [ ] Add close request, that moves ticket to another category and closes after 24h
+- [ ] Add latest activity command, to see when staff last sent a message
