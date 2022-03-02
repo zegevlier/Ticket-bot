@@ -3,6 +3,7 @@ import { Guild, User } from "discord.js";
 import { category } from "../global.js";
 import db from "./db.js";
 import { isPaid } from "./hasRoles.js";
+import { sha256 } from "../utils/sha256.js";
 
 export async function openTicket(guild: Guild, user: User, category: category): Promise<Ticket> {
     let channelName = `${user.username.replace(/[^a-zA-Z0-9]/g, "").substring(0, 21) ?? user.id}-${user.discriminator}`;
@@ -95,6 +96,8 @@ export async function openTicket(guild: Guild, user: User, category: category): 
             categoryId: category.disCategoryId,
         },
     });
+
+    await channel.setTopic(`TICKET - DO NOT CHANGE - ${ticket.ticketId}/${user.id}/${sha256(ticket.ticketId + "/" + user.id + "/" + process.env.CHECKSUM_KEY ?? "")}`);
 
     await db.logs.create({
         data: {

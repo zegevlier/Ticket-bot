@@ -13,11 +13,13 @@ storage_url_prefix: "https://[]/"
 
 categories:
   - name: "General"
+    id: general
     openMessage: "Please specify you issue"
     disCategoryId: ""
     description: "General issues"
     pingingRoles: [""]
   - name: "Account"
+    id: account
     openMessage: "You have an account issue!"
     disCategoryId: ""
     description: "Account related issues"

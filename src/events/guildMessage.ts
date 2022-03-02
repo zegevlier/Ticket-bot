@@ -3,21 +3,37 @@ import { ArgsOf } from "discordx";
 import { addPing } from "../utils/addPing.js";
 import db from "../utils/db.js";
 import { logComment } from "../utils/logComment.js";
+import { sha256 } from "../utils/sha256.js";
 
 export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Client) {
-    const ticket = await db.ticket.findFirst({
-        where: {
-            channelId: message.channel.id,
-            closed: false,
-        }
-    });
+    if (message.channel.type !== "GUILD_TEXT") {
+        return;
+    }
 
-    if (!ticket) {
+    if (!message.channel.topic?.startsWith("TICKET - DO NOT CHANGE - ")) {
+        return;
+    }
+
+    if (message.channel.topic.split(" - ").length !== 3) {
+        return;
+    }
+
+    const ticketInfo = message.channel.topic.split(" - ")[2];
+
+    if (ticketInfo.split("/").length !== 3) {
+        return;
+    }
+
+    const ticketId = ticketInfo.split("/")[0];
+    const ticketUserId = ticketInfo.split("/")[1];
+    const checksum = ticketInfo.split("/")[2];
+
+    if (sha256(`${ticketId}/${ticketUserId}/${process.env.CHECKSUM_KEY ?? ""}`) !== checksum) {
         return;
     }
 
     if (message.content.startsWith(config.silent_prefix)) {
-        logComment(message.content.substring(config.silent_prefix.length), ticket, message.author);
+        logComment(message.content.substring(config.silent_prefix.length), ticketId, message.author);
         return;
     }
 
@@ -28,7 +44,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         messageContent = message.content.substring(config.anon.prefix.length);
     }
 
-    await client.users.send(ticket.userId, {
+    await client.users.send(ticketUserId, {
         embeds: [
             {
                 description: messageContent,
@@ -50,9 +66,9 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         return;
     });
 
-    let user = message.guild?.members.cache.find((member) => member.id === ticket?.userId);
+    let user = message.guild?.members.cache.find((member) => member.id === ticketUserId);
     if (!user) {
-        console.log("Could not find user in guild.", ticket.userId);
+        console.log("Could not find user in guild.", ticketUserId);
         return;
     }
     await message.channel.send({
@@ -83,13 +99,13 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
     });
 
     if ((staffuser && staffuser.pingPreference) || !staffuser) {
-        addPing("USER", message.author.id, ticket.ticketId);
+        addPing("USER", message.author.id, ticketId);
     }
 
     await db.logs.create({
         data: {
             type: "MESSAGE",
-            ticketId: ticket.ticketId,
+            ticketId: ticketId,
             userId: message.author.id,
             message: messageContent,
             anonymous: anon,
