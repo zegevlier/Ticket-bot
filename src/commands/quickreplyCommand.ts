@@ -161,6 +161,7 @@ async function sendQuickReply(interaction: CommandInteraction | SelectMenuIntera
             type: "QUICKREPLY",
             ticketId: ticket.ticketId,
             userId: interaction.user.id,
+            userTag: interaction.user.tag,
             message: quickReply.content ?? "",
             extra: JSON.stringify({
                 quickreply: quickReply.trigger,

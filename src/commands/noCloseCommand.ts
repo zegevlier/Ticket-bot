@@ -57,6 +57,7 @@ class noCloseCommand {
             data: {
                 ticketId: ticket.ticketId,
                 userId: interaction.user.id,
+                userTag: interaction.user.tag,
                 message: reason,
                 type: "NOCLOSE"
             }
