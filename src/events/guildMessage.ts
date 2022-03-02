@@ -10,25 +10,21 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         return;
     }
 
-    if (!message.channel.topic?.startsWith("TICKET - DO NOT CHANGE - ")) {
-        return;
-    }
-
-    if (message.channel.topic.split(" - ").length !== 3) {
+    if (!message.channel.topic?.startsWith("TICKET - DO NOT CHANGE - ") || message.channel.topic.split(" - ").length !== 3) {
         return;
     }
 
     const ticketInfo = message.channel.topic.split(" - ")[2];
 
-    if (ticketInfo.split("/").length !== 3) {
+    if (ticketInfo.split("|").length !== 3) {
         return;
     }
 
-    const ticketId = ticketInfo.split("/")[0];
-    const ticketUserId = ticketInfo.split("/")[1];
-    const checksum = ticketInfo.split("/")[2];
+    const ticketId = ticketInfo.split("|")[0];
+    const ticketUserId = ticketInfo.split("|")[1];
+    const checksum = ticketInfo.split("|")[2];
 
-    if (sha256(`${ticketId}/${ticketUserId}/${process.env.CHECKSUM_KEY ?? ""}`) !== checksum) {
+    if (sha256(`${ticketId}|${ticketUserId}|${process.env.CHECKSUM_KEY ?? ""}`) !== checksum) {
         return;
     }
 
@@ -66,7 +62,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
         return;
     });
 
-    let user = message.guild?.members.cache.find((member) => member.id === ticketUserId);
+    let user = await message.guild?.members.fetch(ticketUserId);
     if (!user) {
         console.log("Could not find user in guild.", ticketUserId);
         return;
@@ -107,6 +103,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
             type: "MESSAGE",
             ticketId: ticketId,
             userId: message.author.id,
+            userTag: message.author.tag,
             message: messageContent,
             anonymous: anon,
             extra: JSON.stringify({

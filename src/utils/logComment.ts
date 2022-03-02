@@ -7,6 +7,7 @@ export async function logComment(message: string, ticketId: string, user: User):
         data: {
             type: "COMMENT",
             userId: user.id,
+            userTag: user.tag,
             ticketId: ticketId,
             message: message,
         }

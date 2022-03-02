@@ -1,6 +1,5 @@
 import { UserContextMenuInteraction } from "discord.js";
 import { ContextMenu, Discord, Guard } from "discordx";
-import db from "../utils/db.js";
 import { isAdminGuard } from "../utils/guards/isAdminGuard.js";
 import { openTicket } from "../utils/ticketOpen.js";
 

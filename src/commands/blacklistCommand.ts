@@ -42,6 +42,7 @@ class blacklistCommand {
             data: {
                 type: "BLACKLIST",
                 userId: user.id,
+                userTag: interaction.user.tag,
                 extra: "Blacklisted by: " + interaction.user.id + " / " + interaction.user.tag + "\nReason: " + reason,
             }
         });

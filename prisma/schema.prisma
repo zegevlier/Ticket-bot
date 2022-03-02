@@ -65,6 +65,7 @@ model Ping {
 model Logs {
   logId     String   @id @default(cuid())
   userId    String
+  userTag   String
   type      LogType
   message   String?
   extra     String?

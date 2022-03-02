@@ -62,6 +62,7 @@ class fixCommand {
             data: {
                 type: "QUICKREPLYREMOVE",
                 userId: interaction.user.id,
+                userTag: interaction.user.tag,
                 message: "Removed quick reply: " + trigger,
                 extra: JSON.stringify(quickReply),
             }

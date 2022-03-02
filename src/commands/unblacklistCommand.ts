@@ -39,6 +39,7 @@ class unblacklistCommand {
             data: {
                 type: "UNBLACKLIST",
                 userId: user.id,
+                userTag: interaction.user.tag,
                 extra: "Unblacklisted by: " + interaction.user.id + " / " + interaction.user.tag,
             }
         });

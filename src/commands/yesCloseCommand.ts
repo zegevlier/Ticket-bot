@@ -53,6 +53,7 @@ class yesCloseCommand {
             data: {
                 ticketId: ticket.ticketId,
                 userId: interaction.user.id,
+                userTag: interaction.user.tag,
                 type: "YESCLOSE"
             }
         });

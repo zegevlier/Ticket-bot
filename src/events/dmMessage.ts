@@ -104,6 +104,7 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                 type: "MESSAGE",
                 ticketId: activeTicket.ticketId,
                 userId: message.author.id,
+                userTag: message.author.tag,
                 message: message.content,
                 extra: JSON.stringify({
                     ...(message.attachments.size > 0 && { attachments: message.attachments.map((attachment) => (attachment)) }),

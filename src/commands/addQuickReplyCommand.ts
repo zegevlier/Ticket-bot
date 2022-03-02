@@ -60,6 +60,7 @@ class fixCommand {
         await db.logs.create({
             data: {
                 type: "QUICKREPLYADD",
+                userTag: interaction.user.tag,
                 userId: interaction.user.id,
                 message: "Added quick reply: " + trigger,
                 extra: JSON.stringify({

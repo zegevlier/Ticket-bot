@@ -25,6 +25,7 @@ export async function onTicketClose(ticket: Ticket, channel: TextBasedChannel, u
         data: {
             ticketId: ticket.ticketId,
             userId: user.id,
+            userTag: user.tag,
             message: reason,
             type: "CLOSE",
             anonymous: anon,
@@ -63,7 +64,7 @@ export async function onTicketClose(ticket: Ticket, channel: TextBasedChannel, u
     });
     let logMessage = "";
     for (let log of logs) {
-        logMessage += `${log.createdAt.toISOString()} | ${log.userId} | ${log.type}${log.anonymous ? " | anonymous" : ""}${log.message === null ? "" : " | " + log.message}${log.extra === null || log.extra === "{}" ? "" : " | " + log.extra}\n`;
+        logMessage += `${log.createdAt.toISOString()} | ${log.userTag} (${log.userId}) | ${log.type}${log.anonymous ? " | anonymous" : ""}${log.message === null ? "" : " | " + log.message}${log.extra === null || log.extra === "{}" ? "" : " | " + log.extra}\n`;
     }
     let ticketOwner = guild.members.cache.find((member) => member.id === ticket?.userId);
     if (!ticketOwner) {

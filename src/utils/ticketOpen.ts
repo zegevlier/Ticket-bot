@@ -97,13 +97,14 @@ export async function openTicket(guild: Guild, user: User, category: category): 
         },
     });
 
-    await channel.setTopic(`TICKET - DO NOT CHANGE - ${ticket.ticketId}/${user.id}/${sha256(ticket.ticketId + "/" + user.id + "/" + process.env.CHECKSUM_KEY ?? "")}`);
+    await channel.setTopic(`TICKET - DO NOT CHANGE - ${ticket.ticketId}|${user.id}|${sha256(ticket.ticketId + "|" + user.id + "|" + process.env.CHECKSUM_KEY ?? "")}`);
 
     await db.logs.create({
         data: {
             type: "CREATETICKET",
             ticketId: ticket.ticketId,
             userId: user.id,
+            userTag: user.tag,
         }
     });
 

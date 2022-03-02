@@ -91,6 +91,7 @@ class closeCommand {
             data: {
                 type: "MOVE",
                 userId: interaction.user?.id,
+                userTag: interaction.user.tag,
                 ticketId: ticket.ticketId,
                 extra: JSON.stringify({
                     from: ticket.categoryId,
