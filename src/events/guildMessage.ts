@@ -74,7 +74,7 @@ export async function handleGuild([message]: ArgsOf<"messageCreate">, client: Cl
                 color: "GREEN",
                 author: {
                     name: anon ? `${message.author.tag} | Anonymous` : `${message.author.tag}`,
-                    icon_url: `${message.author.avatarURL()}`,
+                    icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,
                 },
                 footer: {
                     text: `${user.user.tag} | ${user.id}`,

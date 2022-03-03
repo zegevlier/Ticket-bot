@@ -38,11 +38,11 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
             {
                 embeds: [
                     {
-                        description: `${message.content}`,
+                        description: message.content,
                         color: "GOLD",
                         author: {
-                            name: `${message.author.tag}`,
-                            icon_url: `${message.author.avatarURL()}`,
+                            name: message.author.tag,
+                            icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,
                         },
                         timestamp: new Date(),
                     }
@@ -58,12 +58,12 @@ export async function handleDm([message]: ArgsOf<"messageCreate">, client: Clien
                         description: `${message.content}`,
                         color: "GOLD",
                         author: {
-                            name: `${message.author.tag}`,
-                            icon_url: `${message.author.avatarURL()}`,
+                            name: message.author.tag,
+                            icon_url: message.author.avatarURL() ?? message.author.defaultAvatarURL,
                         },
                         footer: {
                             text: `${message.author.tag} | ${message.author.id}`,
-                            iconURL: `${message.author.avatarURL()}`,
+                            iconURL: message.author.avatarURL() ?? message.author.defaultAvatarURL,
                         },
                         timestamp: new Date(),
                     }
