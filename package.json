@@ -18,7 +18,7 @@
         "@azure/storage-blob": "^12.8.0",
         "@discordx/importer": "^1.1.2",
         "@discordx/pagination": "^1.1.0",
-        "@discordx/utilities": "^3.3.0",
+        "@discordx/utilities": "^4.2.5",
         "@prisma/client": "^3.10.0",
         "@sentry/node": "^6.17.4",
         "@sentry/tracing": "^6.17.4",
