@@ -1,5 +1,9 @@
 # Zeg's ticket bot
 
+## Licence
+
+All rights reserved. You are not allowed to use this code in any way. You are not allowed to host this application anywhere without explicit, written permission from me that is given after the date of 2022/05/21. 
+
 ## Todo
 
 - [x] Fix colours
