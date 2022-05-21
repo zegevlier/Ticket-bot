@@ -15,7 +15,6 @@ All rights reserved. You are not allowed to use this code in any way. You are no
 - [x] Make a better way to view logs
 - [x] Blacklist system
 - [x] Allow staff to set preferences for ping/noping
-- [x] Keyauth info / if paid or not
 - [x] Make sure long usernames can also create tickets
 - [x] Make commands work with pings / return proper errors
 - [x] Fix not a slowflake error in discordjs
