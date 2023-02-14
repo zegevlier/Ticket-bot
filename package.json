@@ -20,7 +20,7 @@
         "@discordx/pagination": "^1.1.0",
         "@discordx/utilities": "^3.3.0",
         "@prisma/client": "^3.10.0",
-        "@sentry/node": "^6.17.4",
+        "@sentry/node": "^7.37.2",
         "@sentry/tracing": "^6.17.4",
         "config-yaml": "^1.1.6",
         "discord-html-transcripts": "^1.1.3",
